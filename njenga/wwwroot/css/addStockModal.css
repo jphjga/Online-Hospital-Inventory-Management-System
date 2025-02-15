@@ -1,0 +1,162 @@
+﻿/* Stock Taking Tab Styles */
+#stock-taking {
+    padding: 20px;
+}
+
+.search-add-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#stockSearch {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.btn-add {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-add:hover {
+        background-color: #218838;
+    }
+
+/* Modal Styling (reused for both modals) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.modal .close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .modal .close:hover,
+    .modal .close:focus {
+        color: black;
+    }
+
+.required {
+    color: red;
+}
+
+.modal-buttons {
+    text-align: right;
+    margin-top: 20px;
+}
+
+    .modal-buttons .btn {
+        margin-left: 10px;
+    }
+
+/* Horizontal Card Container for Stock Taking Cards */
+.horizontal-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Card Styling for Stock Taking */
+.card.stock-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 250px; /* Adjust as needed */
+    transition: transform 0.2s;
+}
+
+    .card.stock-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card.stock-card h3 {
+        margin: 0 0 10px;
+        color: #333;
+    }
+
+    .card.stock-card p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+/* Bottom Info Styling */
+.bottom-info {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Button Container */
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn.btn-secondary,
+.btn.btn-primary {
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: 1em;
+}
+
+.btn.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+    .btn.btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+.btn.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+    .btn.btn-primary:hover {
+        background-color: #0069d9;
+    }

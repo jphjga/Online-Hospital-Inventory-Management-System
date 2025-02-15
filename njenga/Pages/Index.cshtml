@@ -1,0 +1,118 @@
+﻿@page
+@model Njenga.Pages.IndexModel
+@{
+    ViewData["Title"] = "LoginPage";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Njenga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Welcome Back</h2>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="mb-4 text-sm text-red-600 bg-red-100 p-3 rounded-md animate__animated animate__shakeX">
+                @Model.ErrorMessage
+            </div>
+        }
+
+        <form id="loginForm" method="post" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Institution</label>
+                <select asp-for="InstitutionId" class="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300">
+                    <option value="">Select Institution</option>
+                    @foreach (var institution in Model.Institutions)
+                    {
+                        <option value="@institution.InstitutionId">@institution.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Email</label>
+                <input asp-for="Email" type="email" class="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Password</label>
+                <input asp-for="Password" type="password" class="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required />
+            </div>
+
+            <button type="submit" id="loginBtn" class="btn btn-primary">
+                <span id="btnText">Login</span>
+                <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            </button>
+
+        </form>
+
+        <p class="mt-4 text-center text-sm text-gray-500">© @DateTime.Now.Year Njenga. All rights reserved.</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginBtn = document.getElementById("loginBtn");
+            const btnText = document.getElementById("btnText");
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            const loginForm = document.getElementById("loginForm");
+            const body = document.body; // Apply fade effects to the body
+
+            // 🔹 Fade-in effect on page load
+            body.style.opacity = 0;
+            body.style.transition = "opacity 0.5s ease-in-out";
+            setTimeout(() => {
+                body.style.opacity = 1;
+            }, 100);
+
+            // 🔹 Handle login button click
+            loginBtn.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent immediate form submission
+                btnText.textContent = "Logging in...";
+                loadingSpinner.classList.remove("d-none");
+                loginBtn.disabled = true;
+
+                // Submit form using fetch API
+                const formData = new FormData(loginForm);
+
+                fetch(loginForm.action, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        fadeOutBeforeRedirect(result.redirectUrl); // Smooth transition before redirecting
+                    } else {
+                        alert("Invalid credentials, please try again.");
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error("Login error:", error);
+                });
+            });
+        });
+
+        // 🔹 Fade-out effect before redirection
+        function fadeOutBeforeRedirect(url) {
+            document.body.style.opacity = 0;
+            setTimeout(() => {
+                window.location.href = url;
+            }, 500); // Matches the transition time
+        }
+    </script>
+
+
+
+</body>
+</html>

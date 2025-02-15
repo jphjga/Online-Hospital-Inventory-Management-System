@@ -1,0 +1,82 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+
+/* Ensure the page takes full height */
+
+html, body {
+    background-color:antiquewhite; 
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure the wrapper fills the viewport */
+.wrapper {
+    display: flex;
+    flex-grow: 1;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background: #333;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 20px;
+}
+
+/* Content Area */
+.content {
+    flex-grow: 1;
+    margin-left: 250px; /* Pushes content to the right to avoid overlap */
+    padding: 20px;
+}
+
+/* Floating Navigation */
+.floating-nav {
+    position: fixed;
+    top: 0;
+    left: 250px; /* Align with content */
+    right: 0;
+    background: #007bff;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Footer */
+.footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto; /* Pushes it to the bottom */
+}
+
+
+
+/* Optional: Add a semi-transparent overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adjust opacity */
+}
+
+/* Ensure the login form is centered and readable */
+.login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9); /* Light background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
