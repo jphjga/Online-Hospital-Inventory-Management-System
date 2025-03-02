@@ -16,20 +16,18 @@ features to better understand the performance of
 an institution
 
 
-Features
+--Features
 
 
-.• Inventory tracking
+. Inventory tracking
 • Collaboration for sharing health information
 • Medication availability tracking
 • Basic data analysis for performance evaluation
 
 
-Installation
-
-
+--Installation:
+ 
 To try out the system:
-
 
 1. Download the project's zip file.
 
@@ -39,12 +37,14 @@ To try out the system:
 
 4. Migrate all models to automatically create the
 
-database. you can also create the databases tables manually as presented in the models folder.
+   database. you can also create the database manually. 
+
+--important note: remember to configure the application to access your local server. 
 
 5. The system wil be ready for use.
 
 
-Contribution
+--Contribution
 
 
 We welcome contributions to improve the system
