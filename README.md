@@ -31,11 +31,17 @@ Installation
 To try out the system:
 
 
-1. Download the base folder.
-2. Open the project using Visual Studio.
-3. Migrate all models to automatically create the
-database.
-4. The system wil be ready for use.
+1. Download the project's zip file.
+
+2. Extract the folder.
+
+3. Open the project using Visual Studio.
+
+4. Migrate all models to automatically create the
+
+database. you can also create the databases tables manually as presented in the models folder.
+
+5. The system wil be ready for use.
 
 
 Contribution
