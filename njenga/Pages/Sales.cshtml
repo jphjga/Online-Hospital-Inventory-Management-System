@@ -1,0 +1,97 @@
+﻿@page
+@model SalesModel
+@{
+    ViewData["Title"] = "Sales";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <title>Sales</title>
+    <link href="~/css/stock.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Floating Back Button -->
+    <button class="back-button" onclick="location.href='/MainDash';">Back</button>
+    <div id="floatingInfo">
+        <span id="loggedInUser">
+            @HttpContext.Session.GetString("Username") <i class="fa-solid fa-user"></i>
+        </span>
+        <span id="currentTimeDate"></span>
+    </div>
+    <!-- Main Container (reusing layout from Stocktaking page) -->
+    <div class="main-container">
+        <!-- Left Column (70vw): Sales Details/Form -->
+
+
+        <div class="left-column">
+            <div class="content-container">
+                <h2>Make a Sale</h2>
+                <form method="post">
+                    <table class="sales-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Current Qty</th>
+                                <th>Amount to Sell</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Products.Count; i++)
+                            {
+                                <tr>
+                                    <td>@Model.Products[i].Name</td>
+                                    <td>@Model.Products[i].Quantity</td>
+                                    <td>
+                                        <input type="number" name="Products[@i].AmountToSell" value="0" min="0" max="@Model.Products[i].Quantity" class="form-control" />
+                                    </td>
+                                    <input type="hidden" name="Products[@i].Product_id" value="@Model.Products[i].Product_id" />
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="for-product">
+                        <button type="submit" class="btn btn-primary">Submit Sale</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- Right Column (30vw): Sales Records/Summary -->
+        <div class="right-column">
+            <div class="content-container">
+                <h2>Sales Records</h2>
+                <div class="sales-record-cards">
+                    @if (Model.SalesRecords != null && Model.SalesRecords.Any())
+                    {
+                        foreach (var sale in Model.SalesRecords)
+                        {
+                            <div class="sales-record-card">
+                                <div class="sales-record-details">
+                                    <span class="sale-date">@sale.Date_Time.ToString("g")</span>
+                                    <span class="sale-user">User: @sale.User</span>
+                                    <span class="sale-count">Count: @sale.Count</span>                                    
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No sales records found.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="~/js/stocktaking.js"></script>

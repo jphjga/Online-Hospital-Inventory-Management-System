@@ -69,60 +69,38 @@
             <td>${product.Description}</td>
             <td>${product.Price}</td>
             <td>
-                <input type="number" name="StockTakingProducts[${index}].Quantity" value="${product.Quantity}" min="0" required>
+                <input type="number" name="StockTakingProducts.Quantity" value="${product.Quantity}" min="0" required>
             </td>
             <td>${product.Expiry}</td>
             <td>${product.Barcode}</td>
             <td>${product.Quantity_alert}</td>
             <td>${product.Category}</td>
             <td>
-                <input type="hidden" name="StockTakingProducts[${index}].Product_id" value="${product.Product_id}">
+                <input type="hidden" name="StockTakingProducts.Product_id" value="${product.Product_id}">
+                    <input type="hidden" name="StockTakingProducts.InstitutionId" value="${product.InstitutionId}">
                 <button type="button" class="btn btn-danger remove-product" data-id="${product.Product_id}">Remove</button>
             </td>
         `;
 
             tableBody.appendChild(row);
         });
-  
+        document.addEventListener("DOMContentLoaded", function () {
+            const saveStockBtn = document.getElementById("saveStockBtn");
+            const stockTakingForm = document.getElementById("stockTakingForm");
 
+            if (saveStockBtn && stockTakingForm) {
+                saveStockBtn.addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent default form submission
 
-        document.getElementById("saveStockBtn").addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent page refresh
+                    console.log("Submitting Stock Taking Form..."); // Debugging log
 
-            let form = document.getElementById("stockTakingForm");
-            let tableBody = document.getElementById("stockTakingTableBody");
-
-            // Remove existing hidden inputs to avoid duplicates
-            document.querySelectorAll(".hidden-stock-data").forEach(e => e.remove());
-
-            let rows = tableBody.querySelectorAll("tr");
-
-            rows.forEach(row => {
-                let productId = row.dataset.productId;
-                let quantityInput = row.querySelector(".product-quantity");
-
-                if (quantityInput) { // Ensure quantity field exists
-                    let quantity = quantityInput.value;
-
-                    let inputProductId = document.createElement("input");
-                    inputProductId.type = "hidden";
-                    inputProductId.name = `StockTakingProducts[${productId}].Product_id`;
-                    inputProductId.value = productId;
-                    inputProductId.classList.add("hidden-stock-data");
-
-                    let inputQuantity = document.createElement("input");
-                    inputQuantity.type = "hidden";
-                    inputQuantity.name = `StockTakingProducts[${productId}].Quantity`;
-                    inputQuantity.value = quantity;
-                    inputQuantity.classList.add("hidden-stock-data");
-
-                    form.appendChild(inputProductId);
-                    form.appendChild(inputQuantity);
-                }
-            });
-
-            form.submit(); // Submit form
+                    stockTakingForm.submit(); // Submit the form
+                });
+            } else {
+                console.error("Save button or form not found!");
+            }
         });
+
 
 
 

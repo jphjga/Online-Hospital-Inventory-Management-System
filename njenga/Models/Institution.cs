@@ -14,7 +14,6 @@ namespace Njenga.Models
 
         [StringLength(255)]
         public string Location { get; set; } = string.Empty; // Default value
-
-        public ICollection<Product>? Products { get; set; } // Make nullable
+        public string? About { get; set; } // Make nullable
     }
 }

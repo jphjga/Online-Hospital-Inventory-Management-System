@@ -1,4 +1,14 @@
-﻿/* General Styling */
+﻿:root {
+    --background: #dedede;
+    --navbar-width: 256px;
+    --navbar-width-min: 80px;
+    --navbar-dark-primary: #18283b;
+    --navbar-dark-secondary: #2c3e50;
+    --navbar-light-primary: #f5f6fa;
+    --navbar-light-secondary: #8392a5;
+}
+
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,76 +16,31 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background: var(--background);
 }
 
 /* Dashboard Container */
 .dashboard-container {
     display: flex;
-    flex: 1;
-    max-height: 790px;
+    width: 100%;
+    flex: 1; 
+    max-height: 100vh;
 }
-
-/* Left Sidebar */
-.sidebar {
-    width: 150px;   
-    color: white;    
-    position: fixed;
-    height: 70%;
-    top: 100px;
-    left: 10px;
-    display: flex;
-    justify-content: space-between;    
-    background: #333;
-    padding-left: 10px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-}
-
-    .sidebar ul {
-        list-style:none;
-        padding: 0;
-        padding-top:150px;
-       
-    }
-
-        .sidebar ul li {
-            padding: 10px;
-            text-align: center;
-            background: #444;
-            border-radius: 5px;
-            margin: 2px;
-        }
-
-            .sidebar ul li a {
-                color: white;
-                text-decoration: none;
-                display: block;
-                padding: 10px;
-                border-radius: 5px;
-            }
-
-                .sidebar ul li a:hover,
-                .top-navbar ul li a.active {
-                    background: #ff9800;
-                }
-
 /* Main Content */
 .main-content {
-    margin-left: 150px;
+    margin-left: 5vw;
+    width: 95vw;
     flex-grow: 1;
-    padding: 20px;
 }
-
 .data-container {
-    max-height: 600px;
+    max-height: 77vh;
     overflow-y: auto;
     background: white;
-    padding: 20px;
+    padding: 5px;
+    margin-top: 2vh;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .table {
     width: 100%;
     border-collapse: collapse; 
@@ -92,7 +57,6 @@ body {
         background: #eeeeee;
         color: black;
     }
-
 /* Table styling */
 .table-container {
     overflow-x: auto;
@@ -106,7 +70,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: auto 20px auto 20px;
 }
-
     .form-container input, .form-container textarea, .form-container select {
         width: 100%;
         padding: 10px;
@@ -114,47 +77,42 @@ body {
         border: 1px solid #ddd;
         border-radius: 5px;
     }
-
 .top-nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center; /* Ensure vertical alignment */
     position: fixed;
-    top: 10px;
+    top: 0;
     left: 10px;
     right: 10px;
-    background: #333;
+    background: var(--navbar-dark-primary);
+    color: var(--navbar-light-primary);
     padding: 10px 20px;
     border-radius: 15px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
-
 /* Ensure both navbars behave correctly */
 .top-navbar {
     display: flex;
     flex: 1; /* Distribute space evenly */
 }
-
 /* Left Navigation Bar */
 .left-navbar {
     justify-content: flex-start; /* Align items to the far left */
 }
-
 .right-navbar {
     justify-content: flex-end; /* Align items to the far right */
 }
-
 .top-navbar ul {
     display: flex;
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
     /* Navbar items */
     .top-navbar ul li {
-        margin: 0 10px;
+        margin: 10px 10px;
     }
 
         .top-navbar ul li a {
@@ -193,11 +151,9 @@ body {
 .alert {   
     padding: 10px;
     background-color: #ffc107;
-    color: #856404;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    margin-left: 500px;
-    margin-right: 500px;   
+    color: #856404;    
+    margin: auto;   
+    width: 30vw;
 }
 
     .alert a {
@@ -365,7 +321,7 @@ body {
 }
 
 .nearing-expiry {
-    background-color: #fff3cd; /* Light yellow */
+    background-color: #e0e0e0; /* Light yellow */
     color: #856404;
 }
 
@@ -376,13 +332,14 @@ body {
     flex-direction:column;/* Stacks cards vertically */
     gap: 15px;
     padding: 15px 0;
+    margin: 20px ;
     max-width: auto; /* Adjust width as needed */
    
 }
 
 .vertical-card {
-    background: white;
-    padding: 5px;
+    background: #e0e0e0;
+    padding: 5px;  
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
@@ -390,6 +347,11 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+}
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);   
+    gap: 20px;
 }
 
     .vertical-card:hover {
@@ -408,7 +370,7 @@ body {
     }
 
 .low-stock {
-    background-color: #fff3cd; /* Light yellow for alert */
+    background-color: #e0e0e0; /* Light yellow for alert */
     color: #856404;
 }
 
@@ -494,4 +456,13 @@ body {
 }
 .btn-primary:hover {
   background-color: #218838;
+}
+/* Footer */
+.footer {
+    background-color: #e0e0e0;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+    color: #555;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);    
 }

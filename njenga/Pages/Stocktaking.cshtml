@@ -1,0 +1,96 @@
+﻿@page
+@model StocktakingModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <title>Stocktaking</title>
+    <link href="~/css/stock.css" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- Floating Back Button -->
+    <button class="back-button" onclick="location.href='/MainDash';">Back</button>
+    <div id="floatingInfo">        
+        <span id="loggedInUser">
+            @HttpContext.Session.GetString("Username") <i class="fa-solid fa-user"></i>
+        </span>
+        <span id="currentTimeDate"></span>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Column (70vw) -->
+        <div class="left-column">
+            <div class="content-container">
+            <h2>Take Stock</h2>
+            <form method="post">
+                <table class="stock-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Current Qty</th>
+                            <th>New Qty</th>
+                            <th>Remove Expired</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Products.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model.Products[i].Name</td>
+                                <td>@Model.Products[i].Quantity</td>
+                                <td>
+                                    <input type="number" name="Products[@i].NewQuantity" value="@Model.Products[i].NewQuantity" min="0" class="form-control" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="Products[@i].RemoveExpired" value="true" />
+                                </td>
+                                <input type="hidden" name="Products[@i].Product_id" value="@Model.Products[i].Product_id" />
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                    <div class="for-product">
+                        <button type="submit" class="btn btn-primary">Submit Stock Take</button>
+                    </div>
+
+            </form>
+            </div>
+        </div>
+
+
+        <!-- Right Column (30vw) -->
+        <div class="right-column">
+            <div class="content-container">
+                <h2>Stock Taking Records</h2>
+                <div class="stock-item-cards">
+                    @if (Model.StockTakings != null && Model.StockTakings.Any())
+                    {
+                        foreach (var record in Model.StockTakings)
+                        {
+                            <div class="stock-item-card">
+                                <div class="stock-item-details">
+                                    <span class="stock-date">@record.DateTime.ToString("g")</span>
+                                    <span class="stock-user">User: @record.User</span>                                   
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No stock taking records found.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script src="~/js/stocktaking.js"></script>

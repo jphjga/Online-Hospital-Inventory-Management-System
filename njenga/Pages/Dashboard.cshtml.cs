@@ -42,9 +42,9 @@ namespace Njenga.Pages
 
         // We include FoundProduct in case you still need it (for example, if you previously used a barcode lookup)
         public Product? FoundProduct { get; set; }
-        //stock taking tab
-        public IList<Product> StockTakingProducts { get; set; } = new List<Product>();
-
+        public string Username { get; private set; } = "Unknown User";
+        public string Email { get; private set; } = "Unknown Email";
+  
         public IActionResult OnGet(int? editId)
         {
             int? institutionId = HttpContext.Session.GetInt32("InstitutionId");
@@ -58,28 +58,20 @@ namespace Njenga.Pages
             // Load pending purchases from session for the Add Purchases tab.
             PendingPurchases = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases")
                                 ?? new List<PurchaseRecord>();
-
+            Username = HttpContext.Session.GetString("Username") ?? "Unknown User";
+            Email = HttpContext.Session.GetString("Email") ?? "Unknown Email";
             // Load confirmed purchases from the database.
             PurchasedProducts = _context.PurchaseRecords
                 .Where(p => p.InstitutionId == institutionId)
-                .ToList();
+                .ToList();        
 
             // If an edit is requested, load the product for editing.
             if (editId.HasValue)
             {
                 NewProduct = _context.Products.FirstOrDefault(p => p.Product_id == editId) ?? new Product();
+           
             }
-            else
-            {
-                // For stock taking, we want the modal to be empty until a product is selected.
-                NewProduct = new Product();
-            }
-
-            //stock taking tab.
-            StockTakingProducts = HttpContext.Session.GetObjectFromJson<List<Product>>("StockTakingProducts")
-                ?? new List<Product>();
-
-
+       
             return Page();
         }
 
@@ -93,35 +85,7 @@ namespace Njenga.Pages
                 return Page();
             }
 
-            // Check if stock-taking data was submitted
-            var stockTakingData = Request.Form.Where(k => k.Key.StartsWith("StockTakingProducts")).ToDictionary(k => k.Key, k => k.Value.ToString());
 
-            if (stockTakingData.Count > 0)
-            {
-                // Stock Taking Mode
-                foreach (var key in stockTakingData.Keys)
-                {
-                    if (key.Contains(".Product_id"))
-                    {
-                        int productId = int.Parse(stockTakingData[key]);
-                        string quantityKey = key.Replace("Product_id", "Quantity");
-
-                        if (stockTakingData.ContainsKey(quantityKey))
-                        {
-                            int newQuantity = int.Parse(stockTakingData[quantityKey]);
-
-                            var existingProduct = _context.Products.FirstOrDefault(p => p.Product_id == productId);
-                            if (existingProduct != null)
-                            {
-                                existingProduct.Quantity = newQuantity;  // Update Quantity
-                            }
-                        }
-                    }
-                }
-
-                _context.SaveChanges();
-                return RedirectToPage();
-            }
 
             // Regular Product Update / Add Mode
             if (NewProduct.Product_id == 0)
@@ -142,13 +106,41 @@ namespace Njenga.Pages
                     existingProduct.Quantity_alert = NewProduct.Quantity_alert;
                     existingProduct.Category = NewProduct.Category;
                     existingProduct.InstitutionId = NewProduct.InstitutionId;
-                }
-            }
 
+
+                }               
+            }
+            
             _context.SaveChanges();
             return RedirectToPage();
         }
 
+        public IActionResult OnPostAddPendingPurchase(string Name, string Amount, int Quantity, decimal? Price)
+        {
+            int? institutionId = HttpContext.Session.GetInt32("InstitutionId");
+            if (institutionId == null)
+                return BadRequest("Institution ID not found in session");
+
+            // Create a pending purchase record
+            var purchaseRecord = new PurchaseRecord
+            {
+                Name = Name,
+                Amount = Amount,
+                Quantity = Quantity,
+                Price = Price,
+                InstitutionId = institutionId.Value
+            };
+
+            // Retrieve existing pending purchases from session
+            var pending = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases") ?? new List<PurchaseRecord>();
+
+            // Add the new purchase to session storage
+            pending.Add(purchaseRecord);
+            HttpContext.Session.SetObjectAsJson("PendingPurchases", pending);
+
+            return RedirectToPage();
+        }
+      
 
 
         public IActionResult OnPostClearPendingPurchases()
@@ -184,6 +176,12 @@ namespace Njenga.Pages
         // Handler to add a pending purchase (existing functionality for the Add Purchases tab)
         public IActionResult OnPostAddPurchase(int productId)
         {
+            int? institutionId = HttpContext.Session.GetInt32("InstitutionId");
+            if (institutionId == null)
+            {
+                return RedirectToPage(); // Reload the same page if InstitutionId is missing
+            }
+
             var product = _context.Products.FirstOrDefault(p => p.Product_id == productId);
             if (product != null)
             {
@@ -193,16 +191,19 @@ namespace Njenga.Pages
                     Amount = null, // Optional
                     Quantity = product.Quantity,
                     Price = product.Price,
-                    InstitutionId = product.InstitutionId
+                    InstitutionId = institutionId.Value
                 };
 
                 var pending = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases")
                               ?? new List<PurchaseRecord>();
+
                 pending.Add(purchaseRecord);
                 HttpContext.Session.SetObjectAsJson("PendingPurchases", pending);
             }
-            return RedirectToPage();
+
+            return RedirectToPage(); // Reload the page after submission
         }
+
 
         public IActionResult OnPostRemovePurchase(int id)
         {
@@ -245,71 +246,5 @@ namespace Njenga.Pages
                 .OrderBy(p => p.Quantity)
                 .ToList();
         }
-
-        //stock taking
-        public IActionResult OnPostAddToStockTaking(int productId)
-        {
-            var product = _context.Products.FirstOrDefault(p => p.Product_id == productId);
-            if (product != null)
-            {
-                var stockTakingList = HttpContext.Session.GetObjectFromJson<List<Product>>("StockTakingProducts") ?? new List<Product>();
-                stockTakingList.Add(product);
-                HttpContext.Session.SetObjectAsJson("StockTakingProducts", stockTakingList);
-            }
-            return RedirectToPage();
-        }
-
-        //product detais model
-        public IActionResult OnPostAddToStockTaking([FromBody] Product product)
-        {
-            if (product == null)
-            {
-                return new JsonResult(new { success = false, error = "Invalid product data." });
-            }
-
-            var stockTakingProducts = HttpContext.Session.GetObjectFromJson<List<Product>>("StockTakingProducts") ?? new List<Product>();
-
-            // Avoid duplicates
-            if (!stockTakingProducts.Any(p => p.Product_id == product.Product_id))
-            {
-                stockTakingProducts.Add(product);
-                HttpContext.Session.SetObjectAsJson("StockTakingProducts", stockTakingProducts);
-            }
-
-            return new JsonResult(new { success = true });
-        }
-
-
-
-        public IActionResult OnPostStockTaking()
-        {
-            if (StockTakingProducts == null || StockTakingProducts.Count == 0)
-            {
-                ModelState.AddModelError("", "No products selected for stock taking.");
-                return Page();
-            }
-
-            // Debug: Print received data
-            foreach (var stockProduct in StockTakingProducts)
-            {
-                Console.WriteLine($"Received: Product ID = {stockProduct.Product_id}, Quantity = {stockProduct.Quantity}");
-            }
-
-            foreach (var stockProduct in StockTakingProducts)
-            {
-                var existingProduct = _context.Products.FirstOrDefault(p => p.Product_id == stockProduct.Product_id);
-                if (existingProduct != null)
-                {
-                    existingProduct.Quantity = stockProduct.Quantity; // Update only quantity
-                }
-            }
-
-            _context.SaveChanges();
-            HttpContext.Session.Remove("StockTakingProducts"); // Clear session after saving
-            return RedirectToPage();
-        }
-
-
-
     }
 }

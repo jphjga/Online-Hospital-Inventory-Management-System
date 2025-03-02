@@ -1,0 +1,162 @@
+﻿/* Modal container */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+}
+
+    /* When modal is shown, display as flex to center content */
+    .modal.show {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+/* Modal content box */
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    width: 90%;
+    overflow-y: auto;
+    max-width: 70vw;
+    min-height: 70vh;
+    max-height: 80vh; /* Increase initial height */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text */
+}
+.modal-menu {
+    list-style: none;
+    padding: 0;
+}
+
+    .modal-menu li {
+        padding: 10px 0;
+    }
+
+    .modal-menu a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+
+        .modal-menu a:hover {
+            color: #007BFF;
+        }
+
+/* Close button styling */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+    }
+
+/* Search container styles */
+.search-container {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+    /* Search input styling */
+    .search-container input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    /* Search button styling */
+    .search-container button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        background-color: #007BFF;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+
+/* Optional: styling for search results */
+#searchResults {
+    /* Create two independent columns */
+    column-count: 3;
+    column-gap: 15px;
+    margin-top: 20px;
+}
+.search-result {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px; /* Optional: rounds the corners */
+    background-color: #fff;
+}
+
+
+    .search-result h3 {
+        margin: 5px;
+    }
+
+    .search-result p {
+        margin: 5px;
+    }
+
+
+.expand-btn {
+    background-color: #007BFF;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+    .expand-btn:hover {
+        background-color: #0056b3;
+    }
+
+/* Each individual search result */
+.search-result {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #fff;  
+    overflow: hidden; 
+}
+
+/* Default state for additional info (collapsed) */
+.additional-info {
+    max-height: 0;
+    transition: max-height 0.3s ease;
+}
+
+    /* Expanded state for additional info */
+    .additional-info.expanded {
+        max-height: 200px; /* Adjust as needed */
+    }

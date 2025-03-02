@@ -12,32 +12,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard --</title>
     <link href="~/css/dashboard.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <link href="~/css/purchasemodel.css" rel="stylesheet" />
     <link href="~/css/addstockmodal.css" rel="stylesheet" />
+    <link href="~/css/Navstyle.css" rel="stylesheet" />
+    <link href="~/css/addproductmodal.css" rel="stylesheet" />
 </head>
 <body>
 
     <div class="dashboard-container">
-        <!-- Left Sidebar -->
-        <nav class="sidebar">
-            <ul>
-                <li><a href="#stock-taking" class="tab-link" data-tab="stock-taking" data-column="left">Stock Taking</a></li>
-                <li><a href="#">User Profile</a></li>
-                <li><a href="#">Query Center</a></li>
-                <li><a href="/Index">Sign Out</a></li>
-            </ul>
-        </nav>
+       
         <!-- Top Floating Navigation Bars -->
         <div class="top-nav-container">
-            <!-- Left Floating Navbar -->
+          
             <nav class="top-navbar left-navbar">
                 <ul>
-                    <li><a href="#products" class="tab-link active" data-tab="products" data-column="left">Products</a></li>
-                    <li><a href="#add-product" class="tab-link" data-tab="add-product" data-column="left">Add Product</a></li>
+                    <li><a href="#products" class="tab-link active" data-tab="products" data-column="left">Products</a></li>                    
                     <li><a href="add-purchases" class="tab-link" data-tab="add-purchases" data-column="left">Add Purchases</a></li>
                     <li><a href="#expiry-calendar" class="tab-link" data-tab="expiry-calendar" data-column="left">Expiry Calendar</a></li>
-                    <li><a href="#add-quotations" class="tab-link" data-tab="add-quotations" data-column="left">Add Quotations</a></li>
+                    
                 </ul>
             </nav>
 
@@ -46,14 +39,14 @@
                 <ul>
                     <li><a href="#stock-alert" class="tab-link" data-tab="stock-alert" data-column="right">Stock Alert</a></li>
                     <li><a href="#purchases" class="tab-link" data-tab="purchases" data-column="right">Purchases</a></li>
-                    <li><a href="#quotations" class="tab-link" data-tab="quotations" data-column="right">Quotations</a></li>
+                   
                 </ul>
             </nav>
         </div>
         <!-- Main Content -->
         <div class="main-content">
 
-            <div class="left-column" style="width: 70%; float: left;">
+            <div class="left-column" style="width: 65vw; float: left;">
                 <!-- Tabs Content -->
                 <section id="products" class="tab-content active" data-column="left">
                     <div class="data-container">
@@ -67,8 +60,7 @@
                                     <th>Expiry</th>
                                     <th>Barcode</th>
                                     <th>Quantity Alert</th>
-                                    <th>Category</th>
-                                    <th>Institution</th>
+                                    <th>Category</th>                                   
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -83,14 +75,15 @@
                                         <td>@product.Expiry?.ToString("yyyy-MM-dd")</td>
                                         <td>@product.Barcode</td>
                                         <td>@product.Quantity_alert</td>
-                                        <td>@product.Category</td>
-                                        <td>@product.Institution?.Name</td>
+                                        <td>@product.Category</td>                                        
                                         <td>
-                                            <a href="Dashboard?editId=@product.Product_id" class="btn btn-warning btn-sm">Edit</a>
-
+                                            <a href="Dashboard?editId=@product.Product_id" class="btn btn-warning btn-sm">
+                                                
+                                                <i class="fa-solid fa-pen-to-square" style="color: #ff0000;"></i>Edit</a>
+                                           
                                             <form method="post" asp-page-handler="Delete">
                                                 <input type="hidden" name="id" value="@product.Product_id" />
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can" style="color: #ff0000;"></i>Delete</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -99,214 +92,8 @@
                         </table>
                     </div>
                 </section>
+              
 
-                <!-- Stock Taking Tab -->
-                <section id="stock-taking" class="tab-content" data-column="left">
-                    <div class="data-container">
-                        <h2>Stock Taking</h2>
-
-                        <!-- Search Bar and Plus Button (if you want to filter products in the drop-down) -->
-                        <div class="search-add-container">
-                            <input type="text" id="stockSearch" placeholder="Search by product name..." class="form-control" />
-                            <button type="button" id="openProductModal" class="btn-add" title="Add Product for Stock Taking">
-                                <span>+</span>
-                            </button>
-                        </div>
-
-                        <!-- Modal: Product Details for Stock Taking -->
-                        <div id="productDetailsModal" class="modal">
-                            <div class="modal-content">
-                                <span class="close" id="closeProductModal">&times;</span>
-                                <h2>Select Product for Stock Taking</h2>
-
-                                <!-- Product Selection -->
-                                <div class="form-group">
-                                <label for="productSelect">Select Product:</label>
-                                    <select id="productSelect" class="form-control">
-                                        <option value="">-- Select Product --</option>
-                                        @foreach (var product in Model.Products)
-                                        {
-                                            <option value="@product.Product_id"
-                                                    data-institutionid="@product.InstitutionId"
-                                                    data-description="@product.Description"
-                                                    data-price="@product.Price"
-                                                    data-quantity="@product.Quantity"
-                                                    data-expiry="@(product.Expiry.HasValue ? product.Expiry.Value.ToString("yyyy-MM-dd") : "")"
-                                                    data-barcode="@product.Barcode"
-                                                    data-quantityalert="@product.Quantity_alert"
-                                                    data-category="@product.Category">
-                                                @product.Name
-                                            </option>
-                                        }
-                                    </select>
-
-                                </div>
-                                <!-- Product Details Form -->
-                                <form id="productDetailForm">
-                                    <div class="form-group">
-                                    <input type="hidden" id="productId" name="Product_id">
-                                    <input type="hidden" id="institutionId" name="InstitutionId">
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Name:</label>
-                                        <input type="text" id="productName" name="Name" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Description:</label>
-                                        <input type="text" id="productDescription" name="Description" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Price:</label>
-                                        <input type="number" id="productPrice" name="Price" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Quantity:</label>
-                                        <input type="number" id="productQuantity" name="Quantity" class="form-control" >
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Expiry:</label>
-                                        <input type="date" id="productExpiry" name="Expiry" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Barcode:</label>
-                                        <input type="text" id="productBarcode" name="Barcode" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Quantity Alert:</label>
-                                        <input type="number" id="productQuantityAlert" name="Quantity_alert" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Category:</label>
-                                    <input type="text" id="productCategory" name="Category" class="form-control"  readonly>
-                                    </div>
-                                    <!-- Proceed Button -->
-                                    <div class="modal-buttons">
-                                    <button type="button" id="proceedStockTaking" class="btn btn-primary">Proceed</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-
-                        <!-- Container for Stock Taking Cards (dynamically generated) -->
-                        <!-- Stock Taking Tab Container -->
-                        <div id="stockCardsContainer" class="horizontal-card-container">
-                            <!-- Form for submitting updated stock quantities -->
-                            <form method="post" id="stockTakingForm">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Expiry</th>
-                                            <th>Barcode</th>
-                                            <th>Quantity Alert</th>
-                                            <th>Category</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="stockTakingTableBody">
-                                        <!-- JavaScript will dynamically insert products here -->
-                                    </tbody>
-                                </table>
-
-                                <!-- Action Buttons: Clear and Save Stock Taking -->
-                                <div class="button-container">
-                                    <button type="button" id="clearStockTaking" class="btn btn-secondary">Clear Stock Taking</button>
-                                    <button type="submit" id="saveStockBtn" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Bottom-Right: Current User and Date/Time Display -->
-                        <div class="bottom-info">
-                            <p id="currentUserInfo">@Model.CurrentUserName : @Model.CurrentDateTime.ToString("dd/MM/yyyy HH:mm:ss")</p>
-                        </div>
-
-                    </div>
-                </section>
-
-
-                <section id="add-product" class="tab-content" data-column="left">
-
-                    <!-- Add / Edit Product Form -->
-                    <div class="form-container">
-                        <form method="post">
-                            <input type="hidden" asp-for="NewProduct.Product_id" />
-
-                            <div class="form-group">
-                                <label for="Name">Product Name</label>
-                                <input asp-for="NewProduct.Name" class="form-control" />
-                                <span asp-validation-for="NewProduct.Name" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Description">Description</label>
-                                <textarea asp-for="NewProduct.Description" class="form-control"></textarea>
-                                <span asp-validation-for="NewProduct.Description" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Price">Price</label>
-                                <input asp-for="NewProduct.Price" class="form-control" />
-                                <span asp-validation-for="NewProduct.Price" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Quantity">Quantity</label>
-                                <input asp-for="NewProduct.Quantity" class="form-control" />
-                                <span asp-validation-for="NewProduct.Quantity" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Expiry">Expiry Date</label>
-                                <input asp-for="NewProduct.Expiry" type="date" class="form-control" />
-                                <span asp-validation-for="NewProduct.Expiry" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Barcode">Barcode</label>
-                                <input asp-for="NewProduct.Barcode" class="form-control" />
-                                <span asp-validation-for="NewProduct.Barcode" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="QuantityAlert">Quantity Alert</label>
-                                <input asp-for="NewProduct.Quantity_alert" class="form-control" />
-                                <span asp-validation-for="NewProduct.Quantity_alert" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Category">Category</label>
-                                <input asp-for="NewProduct.Category" class="form-control" />
-                                <span asp-validation-for="NewProduct.Category" class="text-danger"></span>
-                            </div>
-
-                            <div class="mb-3">
-                                <label asp-for="NewProduct.InstitutionId" class="form-label">Institution</label>
-                                <select asp-for="NewProduct.InstitutionId" class="form-control">
-                                    <option value="">-- Select an Institution --</option>
-                                    @foreach (var institution in Model.Institutions)
-                                    {
-                                        <option value="@institution.InstitutionId">
-                                            @institution.Name
-                                        </option>
-                                    }
-                                </select>
-                                <span asp-validation-for="NewProduct.InstitutionId" class="text-danger"></span>
-                            </div>
-
-                            <div class="for-product">
-                                <button type="submit" class="btn btn-primary">
-                                    @(Model.NewProduct.Product_id == 0 ? "Add Product" : "Update Product")
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </section>
                 <section id="add-purchases" class="tab-content" data-column="left">
                     <div class="data-container">
                         <h2>Add Purchases</h2>
@@ -412,38 +199,40 @@
                 <section id="add-quotations" class="tab-content" data-column="left">Add Quotations Content</section>
 
             </div>
-            <div class="right-column" style="width: 30%; float: right;">
+            <div class="right-column" style="width: 26vw; float: right;">
                 <section id="stock-alert" class="tab-content active" data-column="right">
                     <div class="data-container">
                         <div class="vertical-card-container">
-                            @if (Model.LowStockProducts.Any())
-                            {
-                                @foreach (var product in Model.LowStockProducts)
+                            <div class="card-grid">
+                                @if (Model.LowStockProducts.Any())
                                 {
-                                    <div class="vertical-card low-stock">
-                                        <h3>@product.Name</h3>
-                                        <p><strong>Quantity:</strong> @product.Quantity</p>
-                                        <form method="post" asp-page-handler="AddPurchase">
-                                            <input type="hidden" name="productId" value="@product.Product_id" />
-                                            <button type="submit" class="btn-purchase">Add Purchase</button>
-                                        </form>
+                                    @foreach (var product in Model.LowStockProducts)
+                                    {
+                                        <div class="vertical-card low-stock">
+                                            <h3>@product.Name</h3>
+                                            <p><strong>Quantity:</strong> @product.Quantity</p>
+                                            <form method="post" asp-page-handler="AddPurchase">
+                                                <input type="hidden" name="productId" value="@product.Product_id" />
+                                                <button type="submit" class="btn-purchase">Add Purchase</button>
+                                            </form>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="no-data-card">
+                                        <p>No products are low in stock.</p>
                                     </div>
                                 }
-                            }
-                            else
-                            {
-                                <div class="no-data-card">
-                                    <p>No products are low in stock.</p>
-                                </div>
-                            }
+
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section id="Quotations" class="tab-content" data-column="right">Quotations Content</section>
                 <section id="purchases" class="tab-content" data-column="right">
-                    <div class="data-container">
-                        <h2>Purchases</h2>
+                    <div class="data-container">                   
                         <div class="vertical-card-container">
                             @if (Model.PurchasedProducts.Any())
                             {
@@ -474,12 +263,145 @@
                         </div>
                     </div>
                 </section>
-
             </div>
 
+            <!-- partial:index.partial.html -->
+            <div id="nav-bar">
+                <input id="nav-toggle" type="checkbox" />
+                <div id="nav-header">
+                    <a id="nav-title">Dashboard</a>
+                    <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+                    <hr />
+                </div>
+                <div id="nav-content">
+                    <div class="nav-button"><i class="fas fa-house"></i><a href="/MainDash" class="nav-button"><span>Home Page</span></a></div>
+                    <!-- open 'add Products/Edit modal-->
+                    <div class="nav-button">
+                        <i class="fas fa-thumbtack"></i>
+                        <a href="javascript:void(0);" onclick="openAddProductModal(); return false;">
+                            <span> Add Products</span>
+                        </a>
+                    </div>
+                    <hr />
+                    <div class="nav-button">
+                        <i class="fas fa-pen-nib"></i>
+                        <a href="#add-quotations" class="nav-button tab-link" data-tab="add-quotations" data-column="left">
+                            <span>Add Quotations</span>
+                        </a>
+                    </div>
+                    <div class="nav-button">
+                        <i class="fas fa-clipboard"></i>
+                        <a href="#quotations" class="nav-button tab-link" data-tab="quotations" data-column="right">
+                            <span>Quotations</span>
+                        </a>
+                    </div>
+                    <hr />
+                    <div class="nav-button">
+                        <i class="fas fa-question"></i>
+                        <span>Help</span>
+                    </div>
+                    <div id="nav-content-highlight">
+                    </div>
+                </div>
+                <input id="nav-footer-toggle" type="checkbox" />
+                <div id="nav-footer">
+                    <div id="nav-footer-heading">
+                        <div id="nav-footer-avatar"><i class="fa-regular fa-user"></i></div>
+                        <div id="nav-footer-titlebox"><a id="nav-footer-title">@Model.Username</a><span id="nav-footer-subtitle">User</span></div>
+                        <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label>
+                    </div>
+                    <div id="nav-footer-content">
+                        <Lorem><div class="nav-button" style="color: white;"><i class="fas fa-house"></i><a href="/Index" class="nav-button"><span>Sign out</span></a></div></Lorem>
+                    </div>
+                </div>
+            </div>
+            <!-- partial -->
+
+            <!-- Add Product Modal -->
+            <section id="addProductModal" class="pmodal">
+                <div class="pmodal-content">
+                    <!-- Close button -->
+                    <span class="close" onclick="closeAddProductModal()">&times;</span>
+
+                    <!-- Add / Edit Product Form -->
+                    <div class="form-container">
+                        <form method="post">
+                            <input type="hidden" asp-for="NewProduct.Product_id" />
+
+                            <div class="form-group">
+                                <label for="Name">Product Name</label>
+                                <input asp-for="NewProduct.Name" class="form-control" />
+                                <span asp-validation-for="NewProduct.Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Description">Description</label>
+                                <textarea asp-for="NewProduct.Description" class="form-control"></textarea>
+                                <span asp-validation-for="NewProduct.Description" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Price">Price</label>
+                                <input asp-for="NewProduct.Price" class="form-control" />
+                                <span asp-validation-for="NewProduct.Price" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Quantity">Quantity</label>
+                                <input asp-for="NewProduct.Quantity" class="form-control" />
+                                <span asp-validation-for="NewProduct.Quantity" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Expiry">Expiry Date</label>
+                                <input asp-for="NewProduct.Expiry" type="date" class="form-control" />
+                                <span asp-validation-for="NewProduct.Expiry" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Barcode">Barcode</label>
+                                <input asp-for="NewProduct.Barcode" class="form-control" />
+                                <span asp-validation-for="NewProduct.Barcode" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="QuantityAlert">Quantity Alert</label>
+                                <input asp-for="NewProduct.Quantity_alert" class="form-control" />
+                                <span asp-validation-for="NewProduct.Quantity_alert" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Category">Category</label>
+                                <input asp-for="NewProduct.Category" class="form-control" />
+                                <span asp-validation-for="NewProduct.Category" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="NewProduct.InstitutionId" class="form-label">Institution</label>
+                                <select asp-for="NewProduct.InstitutionId" class="form-control">
+                                    <option value="">-- Select an Institution --</option>
+                                    @foreach (var institution in Model.Institutions)
+                                    {
+                                        <option value="@institution.InstitutionId">
+                                            @institution.Name
+                                        </option>
+                                    }
+                                </select>
+                                <span asp-validation-for="NewProduct.InstitutionId" class="text-danger"></span>
+                            </div>
+
+                            <div class="for-product">
+                                <button type="submit" class="btn btn-primary">
+                                    @(Model.NewProduct.Product_id == 0 ? "Add Product" : "Update Product")
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
-
+    <footer class="footer">
     @if (Model.ExpiredProductCount > 0)
     {
         <div class="alert alert-warning">
@@ -487,8 +409,9 @@
             <a href="#" class="tab-link" data-tab="expiry-calendar">View Expiry Calendar</a>
         </div>
     }
+    </footer>
 </body>
 </html>
 <script src="~/js/Dashboard.js"></script>
 <script src="~/js/addpurchasemodal.js"></script>
-<script src="~/js/addstockmodal.js"></script>
+<script src="~/js/addproductmodal.js"></script>

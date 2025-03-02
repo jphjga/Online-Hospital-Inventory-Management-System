@@ -30,15 +30,19 @@ namespace Njenga.Pages
 
         public IActionResult OnPost()
         {
-            var user = _context.Accounts.FirstOrDefault(a => a.Email == Email && a.Password == Password && a.InstitutionId == InstitutionId);
+            var user = _context.Accounts
+                .FirstOrDefault(a => a.Email == Email && a.Password == Password && a.InstitutionId == InstitutionId);
 
             if (user != null)
             {
                 HttpContext.Session.SetInt32("InstitutionId", InstitutionId);
-                return new JsonResult(new { success = true, redirectUrl = Url.Page("Dashboard") });
+                HttpContext.Session.SetString("Username", $"{user.Username}");
+                HttpContext.Session.SetString("Email", user.Email);
+                HttpContext.Session.SetInt32("UserId", user.User_id);
+
+                return new JsonResult(new { success = true, redirectUrl = Url.Page("MainDash") });
             }
 
-            // Return an error response in JSON format
             return new JsonResult(new { success = false, errorMessage = "Invalid login credentials." });
         }
 

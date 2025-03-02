@@ -10,7 +10,7 @@ namespace Njenga.Data
         public DbSet<Account> Accounts { get; set; } // Plural name here
         public DbSet<PurchaseRecord> PurchaseRecords { get; set; }
         public DbSet<StockTaking> StockTakings { get; set; }
-
+        public DbSet<SalesRecord> SalesRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

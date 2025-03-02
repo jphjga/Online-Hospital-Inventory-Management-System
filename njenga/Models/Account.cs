@@ -10,7 +10,7 @@ namespace Njenga.Models
 
         [Required]
         [StringLength(255)]
-        public required string Name { get; set; }
+        public required string Username { get; set; }
 
         [Required]
         [StringLength(255)]

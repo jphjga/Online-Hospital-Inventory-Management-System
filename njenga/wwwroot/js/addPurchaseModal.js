@@ -12,7 +12,7 @@
 
         // 🔹 Fade-in effect on modal load
         modal.style.opacity = 0;
-        modal.style.transition = "opacity 0.3s ease-in-out";
+        modal.style.transition = "opacity 0.1s ease-in-out";
         setTimeout(() => {
             modal.style.opacity = 1;
         }, 100);
@@ -37,4 +37,6 @@
             addPurchaseForm.reset();
         }
     });
+
+
 });

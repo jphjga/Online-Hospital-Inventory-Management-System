@@ -1,0 +1,143 @@
+﻿@page
+@model MainDashModel
+@{
+    ViewData["Title"] = "Main Dashboard";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Dashboard</title>
+    <link rel="stylesheet" href="css/MainDash.css">
+    <link rel="stylesheet" href="~/css/maindashmodals.css">
+</head>
+<body>
+
+    <!-- Institution Name Header -->
+    <div class="institution-header">
+        <h1>@Model.InstitutionName</h1>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="main-dash-container">
+       
+        <!-- Cards Container -->
+        <div class="card-container">
+        
+            <div class="card-grid">
+                <a asp-page="/Dashboard" class="card-link">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Stock Manager</h3>
+                        </div>
+                    </div>
+                </a>
+                <article class="card">
+                    <a href="/Stocktaking" class="card-link">
+                        <div class="card-content">
+                            <h3>Stock Taking</h3>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="card">
+                    <a href="/Sales" class="card-link">
+                        <div class="card-content">
+                            <h3>Sales</h3>
+                        </div>
+                    </a>
+                </article>
+
+                <div class="card query-center-card" onclick="openQueryCenterModal();">
+                    <div class="card-content">
+                        <h3>Query Center</h3>
+                    </div>
+                </div>
+
+                <a href="#" class="card-link">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Reports</h3>
+                        </div>
+                    </div>
+                </a>
+                <!-- User Profile Card (Triggers Modal) -->
+                <div class="card user-profile-card" onclick="openUserProfileModal()" role="button" tabindex="0" aria-label="User Profile">
+                    <div class="card-content">
+                        <h3>User Profile</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- User Profile Modal -->
+    <div id="userProfileModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <h2>User Profile</h2>
+            <ul class="modal-menu">
+                <li><a href="#" onclick="openManageUserModal()">Manage User</a></li>
+                <li><a href="#" onclick="logoutUser()">Log Out</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Manage User Modal -->
+    <div id="manageUserModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <h2>Manage User</h2>
+
+            <!-- Display User Info -->
+            <p><strong>Full Name:</strong> @Model.Username</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+
+            <!-- Password Update Form -->
+            <form id="updatePasswordForm" method="POST" asp-page-handler="UpdatePassword">
+                <!-- Hidden inputs to pass user and institution data -->
+                <input type="hidden" name="userId" value="@HttpContext.Session.GetInt32("UserId")" />
+                <input type="hidden" name="institutionId" value="@HttpContext.Session.GetInt32("InstitutionId")" />
+                <input type="hidden" name="username" value="@HttpContext.Session.GetString("Username")" />
+                <input type="hidden" name="email" value="@HttpContext.Session.GetString("Email")" />
+
+                <!-- New Password Input -->
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password" required minlength="4">
+
+                <!-- Error message if password is too short -->
+                <p id="passwordError" style="color: red; display: none;">Password must be at least 4 characters long.</p>
+
+                <!-- Submit and Close Buttons -->
+                <button id="updatePasswordBtn">Update Password</button>
+                <button type="button" onclick="closeManageUserModal()">Close</button>
+            </form>
+        </div>
+    </div> 
+    <!-- Query Center Modal -->
+    <div id="queryCenterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeQueryCenterModal()">&times;</span>
+            <!-- Modal content goes here -->
+            <h2>Query Center</h2>
+            <div class="search-container">
+                <input type="text" id="searchQuery" placeholder="Search product by name..." class="form-control" />
+                <button id="searchButton" onclick="searchProducts()">Search</button>
+            </div>
+            <div id="searchResults"></div>
+        </div>
+    </div>
+
+
+   
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; @DateTime.Now.Year Njenga | All Rights Reserved</p>
+    </footer>
+</body>
+</html>
+<script src="~/js/MainDash.js"></script>

@@ -1,0 +1,282 @@
+﻿/* Overall Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Floating Back Button */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+    .back-button:hover {
+        background-color: #0056b3;
+    }
+#floatingInfo {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    font-size: 14px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Stocktaking Container */
+.main-container {
+    display: flex;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: 90vh;
+    padding: 20px 50px; /* Reduced top padding from 80px to 20px */
+    align-items: flex-start; /* Align both columns to the top */
+}
+
+
+
+
+.left-column {
+    width: 70vw;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+    .sales-table th, .sales-table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .sales-table th {
+        background-color: #f8f8f8;
+    }
+
+.for-product {
+    text-align: right;
+}
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+    .stock-table th, .stock-table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .stock-table th {
+        background-color: #f8f8f8;
+    }
+
+/* Content Container for Each Column */
+.content-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    min-height: 80vh;
+}
+
+/* Right column container styling */
+.right-column {
+    width: 30vw;
+    padding: 20px;
+    box-sizing: border-box;
+    max-height: 90vh;
+}
+
+/* Container for all stock item cards */
+.stock-item-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 80vh; /* Limits height and enables scroll if necessary */
+    overflow-y: auto;
+}
+
+/* Each stock item card */
+.stock-item-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Layout for the details inside each card */
+.stock-item-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+    /* Styling for each detail element */
+    .stock-item-details span {
+        font-size: 14px;
+        color: #333;
+    }
+/* Ensure the container of the button aligns content to the right */
+.for-product {
+    text-align: right;
+    margin-top: 20px; /* optional spacing above the button */
+}
+
+/* Style for the submit button */
+.btn.btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    /* Animation on button click */
+    .btn.btn-primary:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Optional: hover effect */
+    .btn.btn-primary:hover {
+        background-color: #0056b3;
+    }
+/* Right Column Container */
+.right-column {
+    width: 30vw;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Container for Sales Record Cards */
+.sales-record-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Each Sales Record Card */
+.sales-record-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Layout for the Sales Record Details */
+.sales-record-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+    /* Styling for individual details */
+    .sales-record-details span {
+        font-size: 14px;
+        color: #333;
+    }
+.sales-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.product-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#searchProductInput {
+    padding: 8px;
+    font-size: 16px;
+}
+
+#productDropdown {
+    padding: 8px;
+    font-size: 16px;
+}
+
+/* Styling for Selected Products */
+.sale-product-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+    .sale-product-card h3 {
+        margin: 0;
+    }
+
+.remove-product-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+    .remove-product-btn:hover {
+        background: darkred;
+    }
+
+#proceedSaleBtn {
+    background: #28a745;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    #proceedSaleBtn:hover {
+        background: #218838;
+    }

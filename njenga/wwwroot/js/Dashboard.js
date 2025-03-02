@@ -7,9 +7,19 @@
         right: "stock-alert"
     };
 
-    // Check if an editId is in the URL to auto-switch to Add Product
-    if (urlParams.has("editId")) {
-        activateTab("add-product", "left");
+    function triggerAddProductModal() {
+        const modal = document.getElementById("addProductModal");
+        if (modal) {
+            modal.classList.add("show");
+            console.log("Add Product modal triggered.");
+        } else {
+            console.warn("Modal with id 'addProductModal' not found.");
+        }
+    }
+
+    // Use the new function based on URL parameters
+    if (urlParams.has("editId") || urlParams.get("action") === "add") {
+        triggerAddProductModal();
     } else {
         activateTab(defaultTabs.left, "left");
         activateTab(defaultTabs.right, "right");
@@ -67,6 +77,7 @@
         e.preventDefault();
         activateTab("expiry-calendar", "left");
     });
+
 
 
 });
