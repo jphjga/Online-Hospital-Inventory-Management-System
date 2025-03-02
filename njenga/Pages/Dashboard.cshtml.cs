@@ -8,24 +8,19 @@ using System.Text.Json;
 
 namespace Njenga.Pages
 {
-    public class DashboardModel : PageModel
+    public class DashboardModel(DatabaseContext context) : PageModel
     {
-        private readonly DatabaseContext _context;
-
-        public DashboardModel(DatabaseContext context)
-        {
-            _context = context;
-        }
+        private readonly DatabaseContext _context = context;
 
         [BindProperty]
         public Product NewProduct { get; set; } = new Product();
 
-        public IList<Product> Products { get; set; } = new List<Product>();
-        public IList<Product> ExpiringProducts { get; set; } = new List<Product>();
-        public IList<Institution> Institutions { get; set; } = new List<Institution>();
-        public IList<Product> LowStockProducts { get; set; } = new List<Product>();
-        public IList<PurchaseRecord> PurchasedProducts { get; set; } = new List<PurchaseRecord>(); // For Purchases tab
-        public IList<PurchaseRecord> PendingPurchases { get; set; } = new List<PurchaseRecord>();   // For Add Purchases tab   
+        public IList<Product> Products { get; set; } = [];
+        public IList<Product> ExpiringProducts { get; set; } = [];
+        public IList<Institution> Institutions { get; set; } = [];
+        public IList<Product> LowStockProducts { get; set; } = [];
+        public IList<PurchaseRecord> PurchasedProducts { get; set; } = []; // For Purchases tab
+        public IList<PurchaseRecord> PendingPurchases { get; set; } = [];   // For Add Purchases tab   
         public int ExpiredProductCount { get; set; } = 0;
 
         [BindProperty(SupportsGet = true)]
@@ -57,13 +52,11 @@ namespace Njenga.Pages
 
             // Load pending purchases from session for the Add Purchases tab.
             PendingPurchases = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases")
-                                ?? new List<PurchaseRecord>();
+                                ?? [];
             Username = HttpContext.Session.GetString("Username") ?? "Unknown User";
             Email = HttpContext.Session.GetString("Email") ?? "Unknown Email";
             // Load confirmed purchases from the database.
-            PurchasedProducts = _context.PurchaseRecords
-                .Where(p => p.InstitutionId == institutionId)
-                .ToList();        
+            PurchasedProducts = [.. _context.PurchaseRecords.Where(p => p.InstitutionId == institutionId)];        
 
             // If an edit is requested, load the product for editing.
             if (editId.HasValue)
@@ -132,7 +125,7 @@ namespace Njenga.Pages
             };
 
             // Retrieve existing pending purchases from session
-            var pending = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases") ?? new List<PurchaseRecord>();
+            var pending = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases") ?? [];
 
             // Add the new purchase to session storage
             pending.Add(purchaseRecord);
@@ -146,14 +139,14 @@ namespace Njenga.Pages
         public IActionResult OnPostClearPendingPurchases()
         {
             HttpContext.Session.Remove("PendingPurchases");
-            PendingPurchases = new List<PurchaseRecord>();
+            PendingPurchases = [];
             return RedirectToPage();
         }
 
         public IActionResult OnPostSubmitPendingPurchases()
         {
             var pending = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases")
-                          ?? new List<PurchaseRecord>();
+                          ?? [];
             foreach (var purchase in pending)
             {
                 _context.PurchaseRecords.Add(purchase);
@@ -195,7 +188,7 @@ namespace Njenga.Pages
                 };
 
                 var pending = HttpContext.Session.GetObjectFromJson<List<PurchaseRecord>>("PendingPurchases")
-                              ?? new List<PurchaseRecord>();
+                              ?? [];
 
                 pending.Add(purchaseRecord);
                 HttpContext.Session.SetObjectAsJson("PendingPurchases", pending);
@@ -219,32 +212,29 @@ namespace Njenga.Pages
         // Load dashboard data.
         private void LoadData(int institutionId)
         {
-            Products = _context.Products
+            Products = [.. _context.Products
                 .Where(p => p.InstitutionId == institutionId)
-                .Include(p => p.Institution)
-                .ToList();
+                .Include(p => p.Institution)];
 
-            Institutions = _context.Institutions.ToList();
+            Institutions = [.. _context.Institutions];
 
             ExpiredProductCount = _context.Products
                 .Where(p => p.InstitutionId == institutionId && p.Expiry != null && p.Expiry < DateTime.Now)
                 .Count();
 
-            ExpiringProducts = _context.Products
+            ExpiringProducts = [.. _context.Products
                 .Where(p => p.InstitutionId == institutionId &&
                             p.Expiry != null &&
                             (p.Expiry < DateTime.Now ||
                              (StartDate == null || p.Expiry >= StartDate) &&
                              (EndDate == null || p.Expiry <= EndDate)))
-                .OrderBy(p => p.Expiry)
-                .ToList();
+                .OrderBy(p => p.Expiry)];
 
-            LowStockProducts = _context.Products
+            LowStockProducts = [.. _context.Products
                 .Where(p => p.InstitutionId == institutionId &&
                             p.Quantity_alert.HasValue &&
                             p.Quantity <= p.Quantity_alert.Value)
-                .OrderBy(p => p.Quantity)
-                .ToList();
+                .OrderBy(p => p.Quantity)];
         }
     }
 }

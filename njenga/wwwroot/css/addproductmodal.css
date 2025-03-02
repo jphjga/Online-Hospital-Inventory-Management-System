@@ -21,13 +21,29 @@
 /* Modal content box */
 .pmodal-content {
     background-color: #fefefe;
-    padding: 20px;
+    padding: 0;
     border: 1px solid #888;
     width: 90%;
     max-width: 600px;
     position: relative;
     border-radius: 5px;
 }
+.form-container {
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: auto 20px auto 20px;
+}
+
+    .form-container input, .form-container textarea, .form-container select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
 
 /* Close button styling */
 .close {

@@ -26,8 +26,6 @@
     <!-- Main Container (reusing layout from Stocktaking page) -->
     <div class="main-container">
         <!-- Left Column (70vw): Sales Details/Form -->
-
-
         <div class="left-column">
             <div class="content-container">
                 <h2>Make a Sale</h2>
@@ -36,6 +34,7 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
+                                <th>Description</th>
                                 <th>Current Qty</th>
                                 <th>Amount to Sell</th>
                             </tr>
@@ -45,6 +44,7 @@
                             {
                                 <tr>
                                     <td>@Model.Products[i].Name</td>
+                                    <td>@Model.Products[i].Description</td>
                                     <td>@Model.Products[i].Quantity</td>
                                     <td>
                                         <input type="number" name="Products[@i].AmountToSell" value="0" min="0" max="@Model.Products[i].Quantity" class="form-control" />
@@ -60,11 +60,6 @@
                 </form>
             </div>
         </div>
-
-
-
-
-
         <!-- Right Column (30vw): Sales Records/Summary -->
         <div class="right-column">
             <div class="content-container">

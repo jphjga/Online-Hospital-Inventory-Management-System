@@ -79,5 +79,17 @@
     });
 
 
-
+    //action button iside products table   
+        window.toggleActionDropdown = function (icon) {
+            const dropdown = icon.parentElement.querySelector('.action-menu');
+            if (dropdown) {
+                // Toggle display property
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            } else {
+                console.warn("No action menu found.");
+            }
+    };
+    window.confirmDelete = function () {
+        return confirm("Are you sure you want to delete this item?");
+    }
 });

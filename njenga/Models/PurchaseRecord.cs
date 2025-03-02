@@ -10,17 +10,13 @@ namespace Njenga.Models
 
         [Required]
         [StringLength(255)]
-        public string Name { get; set; } = string.Empty;
-
-        // Amount is optional (nullable)
+        public string Name { get; set; } = string.Empty;       
         public string? Amount { get; set; }
 
         [Required]
-        public int? Quantity { get; set; }
-
-        // Price is optional (nullable), using decimal for currency values
+        public int? Quantity { get; set; }       
         public decimal? Price { get; set; }
-
+        public DateTime Date_Time { get; set; }
         [Required]
         public int InstitutionId { get; set; }
 

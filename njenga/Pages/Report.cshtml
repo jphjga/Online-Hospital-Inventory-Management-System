@@ -1,0 +1,136 @@
+﻿@page
+@using Newtonsoft.Json
+
+@model ReportsModel
+@{
+    ViewData["Title"] = "Reports";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Reports</title>
+    <link rel="stylesheet" href="~/css/Reports.css" />
+    <!-- Include Chart.js (or similar) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Floating Back Button -->
+    <button class="back-button" onclick="location.href='/MainDash';">Back</button>
+    <button id="navToggleBtn" class="nav-toggle-btn" onclick="toggleNav()">☰</button>
+    <nav class="report-nav">
+        <ul>
+            <li><a href="#" data-target="inventorySummary"><span>Inventory Summary</span></a></li>
+            <li><a href="#" data-target="salesTrend" class="active">Sales Trend</a></li>
+            <li><a href="#" data-target="purchasesSummary"><span>Purchases Summary</span></a></li>
+        </ul>
+    </nav>
+    <div class="report-content">
+        <!-- Sales Trend Section -->
+        <section id="salesTrend" class="report-section active">
+            <h2>Sales Trend</h2>
+            <div class="graph-container">
+                <canvas id="salesTrendChart"></canvas>
+                <div class="graph-info">
+                    <p>Monthly sales performance overview.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inventory Summary Section -->
+        <section id="inventorySummary" class="report-section">
+            <h2>Inventory Summary</h2>
+            <h3>Low Stock Products</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Stock</th>
+                        <th>Alert Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Products.Where(p => p.Quantity <= (p.Quantity_alert ?? 0)))
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>@product.Quantity</td>
+                            <td>@product.Quantity_alert</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="graph-container">
+                <canvas id="inventoryChart"></canvas>
+                <div class="graph-info">
+                    <h3>Additional information...</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Purchases Summary Section -->
+        <section id="purchasesSummary" class="report-section">
+            <h2>Purchases Summary</h2>
+            <div class="kpi-cards">
+
+                <h3>Recent Purchases</h3>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var purchase in Model.RecentPurchases)
+                            {
+                                <tr>
+                                    <td>@purchase.Date_Time.ToString("g")</td>
+                                    <td>@purchase.Name</td>
+                                    <td>@purchase.Quantity</td>
+                                    <td>$@purchase.Price</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Graph Container for Purchase Trend -->
+            <div class="graph-container">
+                <canvas id="purchaseTrendChart"></canvas>
+
+                <!-- KPI Cards for Purchases -->
+                <div class="graph-info">
+                    <div class="kpi-card">
+                        <h3>Total Purchased Units</h3>
+                        <p>@Model.PurchaseTrends.Sum(pt => pt.Total)</p>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Total Cost</h3>
+                        <!-- If you have cost data, calculate it here; for now, placeholder -->
+                        <p>$0</p>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Most Purchased Product</h3>
+                        <p>@Model.MostPurchased.Name (@Model.MostPurchased.TotalQuantity units)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pass aggregated data to JavaScript -->
+    <script>
+        var salesTrendData = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SalesTrends))');
+        var inventoryData = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.InventorySummaries))');
+        var purchaseTrendData = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.PurchaseTrends))');
+    </script>
+
+    <script src="~/js/Reports.js" defer></script>
+</body>
+</html>

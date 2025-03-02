@@ -77,14 +77,29 @@
                                         <td>@product.Quantity_alert</td>
                                         <td>@product.Category</td>                                        
                                         <td>
-                                            <a href="Dashboard?editId=@product.Product_id" class="btn btn-warning btn-sm">
-                                                
-                                                <i class="fa-solid fa-pen-to-square" style="color: #ff0000;"></i>Edit</a>
-                                           
-                                            <form method="post" asp-page-handler="Delete">
-                                                <input type="hidden" name="id" value="@product.Product_id" />
-                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can" style="color: #ff0000;"></i>Delete</button>
-                                            </form>
+                                            <div class="action-dropdown">
+                                                <!-- Ellipsis icon to toggle the menu -->
+                                                <i class="fa-solid fa-ellipsis-vertical action-toggle" onclick="toggleActionDropdown(this)"></i>
+
+                                                <!-- Hidden action menu containing the edit and delete options as a list -->
+                                                <div class="action-menu" style="display: none;">
+                                                    <ul class="action-list">
+                                                        <li>
+                                                            <a href="Dashboard?editId=@product.Product_id" class="btn btn-warning btn-sm">
+                                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <form method="post" asp-page-handler="Delete" onsubmit="return confirmDelete();">
+                                                                <input type="hidden" name="id" value="@product.Product_id" />
+                                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                                    <i class="fa-solid fa-trash-can"></i> 
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 }
@@ -274,25 +289,29 @@
                     <hr />
                 </div>
                 <div id="nav-content">
-                    <div class="nav-button"><i class="fas fa-house"></i><a href="/MainDash" class="nav-button"><span>Home Page</span></a></div>
-                    <!-- open 'add Products/Edit modal-->
+                    <div class="nav-button">
+                        <i class="fas fa-house"></i>
+                        <a href="/MainDash" class="nav-button">
+                            <span>Home Page</span>
+                        </a>
+                    </div>                  
                     <div class="nav-button">
                         <i class="fas fa-thumbtack"></i>
-                        <a href="javascript:void(0);" onclick="openAddProductModal(); return false;">
+                        <a href="javascript:void(0);" onclick="openAddProductModal(); return false;" class="nav-button">
                             <span> Add Products</span>
                         </a>
                     </div>
                     <hr />
                     <div class="nav-button">
                         <i class="fas fa-pen-nib"></i>
-                        <a href="#add-quotations" class="nav-button tab-link" data-tab="add-quotations" data-column="left">
-                            <span>Add Quotations</span>
+                        <a href="/Stocktaking" class="nav-button" >
+                            <span>Stock Taking</span>
                         </a>
                     </div>
                     <div class="nav-button">
                         <i class="fas fa-clipboard"></i>
-                        <a href="#quotations" class="nav-button tab-link" data-tab="quotations" data-column="right">
-                            <span>Quotations</span>
+                        <a href="/Sales" class="nav-button">
+                            <span>Sales</span>
                         </a>
                     </div>
                     <hr />
@@ -311,7 +330,7 @@
                         <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label>
                     </div>
                     <div id="nav-footer-content">
-                        <Lorem><div class="nav-button" style="color: white;"><i class="fas fa-house"></i><a href="/Index" class="nav-button"><span>Sign out</span></a></div></Lorem>
+                        <Lorem><div class="nav-button" style="color: white;"><i class="fa-regular fa-right-from-bracket"></i><a href="/Index" class="nav-button"><span>Sign out</span></a></div></Lorem>
                     </div>
                 </div>
             </div>
@@ -319,12 +338,11 @@
 
             <!-- Add Product Modal -->
             <section id="addProductModal" class="pmodal">
-                <div class="pmodal-content">
-                    <!-- Close button -->
-                    <span class="close" onclick="closeAddProductModal()">&times;</span>
-
+                <div class="pmodal-content">                    
                     <!-- Add / Edit Product Form -->
                     <div class="form-container">
+                        <!-- Close button -->
+                        <span class="close" onclick="closeAddProductModal()">&times;</span>
                         <form method="post">
                             <input type="hidden" asp-for="NewProduct.Product_id" />
 
