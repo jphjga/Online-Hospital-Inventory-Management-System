@@ -1,5 +1,4 @@
 # njenga
-# testing
 ---
 
 Cloud-based Hospital
