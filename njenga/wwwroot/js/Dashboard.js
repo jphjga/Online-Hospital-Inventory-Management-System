@@ -90,6 +90,6 @@
             }
     };
     window.confirmDelete = function () {
-        return confirm("Are you sure you want to delete this item?");
+        return confirm("warning! This product is still in stock. If the product have expired, navigate to stock taking page to remove it.");
     }
 });

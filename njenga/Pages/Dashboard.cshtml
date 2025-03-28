@@ -27,9 +27,9 @@
           
             <nav class="top-navbar left-navbar">
                 <ul>
-                    <li><a href="#products" class="tab-link active" data-tab="products" data-column="left">Products</a></li>                    
+                    <li><a href="#products" class="tab-link active" data-tab="products" data-column="left">Inventory Manager</a></li>                    
                     <li><a href="add-purchases" class="tab-link" data-tab="add-purchases" data-column="left">Add Purchases</a></li>
-                    <li><a href="#expiry-calendar" class="tab-link" data-tab="expiry-calendar" data-column="left">Expiry Calendar</a></li>
+                    <li><a href="#expiry-calendar" class="tab-link" data-tab="expiry-calendar" data-column="left">Expiry Calendar</a></li> 
                     
                 </ul>
             </nav>
@@ -38,7 +38,7 @@
             <nav class="top-navbar right-navbar">
                 <ul>
                     <li><a href="#stock-alert" class="tab-link" data-tab="stock-alert" data-column="right">Stock Alert</a></li>
-                    <li><a href="#purchases" class="tab-link" data-tab="purchases" data-column="right">Purchases</a></li>
+                    <li><a href="#purchases" class="tab-link" data-tab="purchases" data-column="right">Purchase Record</a></li>
                    
                 </ul>
             </nav>
@@ -75,26 +75,25 @@
                                         <td>@product.Expiry?.ToString("yyyy-MM-dd")</td>
                                         <td>@product.Barcode</td>
                                         <td>@product.Quantity_alert</td>
-                                        <td>@product.Category</td>                                        
-                                        <td>
+                                        <td>@product.Category</td>
+                                        <td onclick="toggleActionDropdown(this)">
                                             <div class="action-dropdown">
                                                 <!-- Ellipsis icon to toggle the menu -->
-                                                <i class="fa-solid fa-ellipsis-vertical action-toggle" onclick="toggleActionDropdown(this)"></i>
+                                                <i class="fa-solid fa-ellipsis-vertical action-toggle"></i>
 
                                                 <!-- Hidden action menu containing the edit and delete options as a list -->
                                                 <div class="action-menu" style="display: none;">
                                                     <ul class="action-list">
                                                         <li>
-                                                            <a href="Dashboard?editId=@product.Product_id" class="btn btn-warning btn-sm">
-                                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                            <a href="Dashboard?editId=@product.Product_id" class="link">
+                                                                <i class="fa-solid fa-pen-to-square"></i><span> -Edit Product</span>
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <form method="post" asp-page-handler="Delete" onsubmit="return confirmDelete();">
-                                                                <input type="hidden" name="id" value="@product.Product_id" />
-                                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                                    <i class="fa-solid fa-trash-can"></i> 
-                                                                </button>
+                                                            <form method="post" asp-page-handler="Delete" onclick="return confirmDelete();">                                                               
+                                                                <a href="Stocktaking" class="link">                                                                   
+                                                                   <i class="fa-solid fa-trash-can"></i><span> -Delete Product</span> 
+                                                                </a>
                                                             </form>
                                                         </li>
                                                     </ul>
@@ -245,10 +244,9 @@
                     </div>
                 </section>
 
-                <section id="Quotations" class="tab-content" data-column="right">Quotations Content</section>
-                <section id="purchases" class="tab-content" data-column="right">
-                    <div class="data-container">                   
-                        <div class="vertical-card-container">
+                <section id="purchases" class="tab-content" data-column="right">                   
+                    <div class="data-container">                      
+                        <div class="vertical-card-container" id="card-container">
                             @if (Model.PurchasedProducts.Any())
                             {
                                 @foreach (var purchase in Model.PurchasedProducts)
@@ -259,10 +257,11 @@
                                         <p><strong>Quantity:</strong> @purchase.Quantity</p>
                                         <p><strong>Price:</strong> @purchase.Price</p>
 
-                                        <form method="post" asp-page-handler="RemovePurchase" class="remove-form">
+                                       <!-- <form method="post" asp-page-handler="RemovePurchase" class="remove-form">
                                             <input type="hidden" name="id" value="@purchase.Id" />
                                             <button type="submit" class="btn-remove">Remove</button>
-                                        </form>
+                                         </form>
+                                       -->
                                     </div>
                                 }
                             }
@@ -272,12 +271,10 @@
                                     <p>No purchases added yet.</p>
                                 </div>
                             }
-                        </div>
-                        <div class="checkout-container">
-                            <button type="button" class="btn-checkout">Checkout</button>
-                        </div>
+                        </div>                       
                     </div>
                 </section>
+
             </div>
 
             <!-- partial:index.partial.html -->
@@ -317,7 +314,9 @@
                     <hr />
                     <div class="nav-button">
                         <i class="fas fa-question"></i>
-                        <span>Help</span>
+                         <a href="/Report" class="nav-button">
+                            <span>Reports</span>
+                        </a>
                     </div>
                     <div id="nav-content-highlight">
                     </div>

@@ -37,7 +37,7 @@
 
 /* General Styling */
 body {
-    font-size: 16px;
+    font-size: 0.8rem;
     font-family: Arial;
     margin: 0;
     padding: 0;
@@ -51,8 +51,8 @@ body {
 .dashboard-container {
     display: flex;
     width: 100%;
-    flex: 1; 
-    max-height: 100vh;
+    flex: 1;     
+    max-height: 94vh;
 }
 /* Main Content */
 .main-content {
@@ -61,7 +61,7 @@ body {
     flex-grow: 1;
 }
 .data-container {
-    max-height: 77vh;
+    height: 77vh;
     overflow-y: auto;
     background: white;
     padding: 5px;
@@ -78,11 +78,12 @@ body {
         border-bottom: 1px solid #ddd;
         text-align: left;
         border: 1px solid #ddd;
-    } 
-    .table th {  
+    }
+    .table th {
         padding: 5px;
         background: #eeeeee;
         color: black;
+        position: sticky;
     }
     .table td {
         padding: 15px;
@@ -96,6 +97,7 @@ body {
 .action-toggle {
     cursor: pointer;
     font-size: 1.2em;
+    position: center;
 }
 
 .action-menu {
@@ -119,11 +121,13 @@ body {
 }
 
     .action-list li {
-        margin-bottom: 8px;
+        margin-bottom: 8px;       
     }
 
         .action-list li:last-child {
             margin-bottom: 0;
+            border-top: solid 1px var(--navbar-dark-secondary);
+            padding-top: 5px;
         }
 
         /* Optionally, adjust button display within list items */
@@ -132,7 +136,10 @@ body {
             display: block;
         }
 
-
+.link {
+    text-decoration: none;
+    color: var(--navbar-dark-primary);
+}
 
 
 /* Table styling */
@@ -215,7 +222,7 @@ body {
     padding: 10px;
     background-color: #ffc107;
     color: #856404;    
-    margin: auto;   
+    margin: auto;     
     width: 30vw;
 }
 
@@ -280,31 +287,32 @@ body {
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px 0;
- 
+    height: 45vh; 
 }
 
 .card.purchase-card {
-    background: white;
+    background: var(--navbar-dark-secondary);   
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: auto; /* Adjust width as needed for horizontal layout */
+    width: auto;    
     transition: transform 0.2s;
 }
 
     .card.purchase-card:hover {
         transform: translateY(-5px);
+        background: var(--navbar-dark-primary);
     }
 
     .card.purchase-card h3 {
         margin: 0 0 10px;
-        color: #333;
+        color: var(--navbar-light-primary);
     }
 
     .card.purchase-card p {
         margin: 5px 0;
         font-size: 14px;
-        color: #555;
+        color: var(--navbar-light-secondary);
     }
 /* Container for the search bar and add button */
 .search-add-container {
@@ -393,31 +401,32 @@ body {
 
  /*stock alert page*/
 .vertical-card-container {
-    display: flex; 
-    flex-wrap: wrap;
-    flex-direction:column;/* Stacks cards vertically */
+    display: grid;    
+    flex-direction: column; /* Stacks cards vertically */
     gap: 15px;
     padding: 15px 0;
-    margin: 20px ;
+    margin: 20px;
+    height: 90vh;
     max-width: auto; /* Adjust width as needed */
-   
 }
 
 .vertical-card {
     background: #e0e0e0;
-    padding: 5px;  
+    padding: 5px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
     display: flex;
-    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-direction: row;   
     align-items: center;
-    text-align: center;
+    text-align: center; 
+    
 }
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);   
-    gap: 20px;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;   
 }
 
     .vertical-card:hover {
@@ -425,24 +434,25 @@ body {
     }
 
     .vertical-card h3 {
-        margin: 0 0 10px;
+        margin: 0 0 5px;
         color: #333;
     }
 
-    .vertical-card p {
-        margin: 5px 0;
-        font-size: 14px;
-        color: #555;
-    }
+.vertical-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+    border-left: solid 1px var(--navbar-dark-secondary);
+}
 
 .low-stock {
-    background-color: #e0e0e0; /* Light yellow for alert */
+    background-color: #e0e0e0; 
     color: #856404;
 }
 
 /* Button Styling */
 .btn-purchase {
-    background: #28a745;
+    background: var(--navbar-dark-primary);
     color: white;
     border: none;
     padding: 8px 12px;
@@ -477,32 +487,7 @@ body {
 }
 
     .btn-remove:hover {
-        background-color: #c9302c;
-    }
-
-
-    .btn-remove:hover {
-        color: #c9302c;
-    }
-
-/* Checkout Button Styling */
-.checkout-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.btn-checkout {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-}
-
-    .btn-checkout:hover {
-        background-color: #218838;
+        background-color: #c9302c;       
     }
 
 .for-product {    
@@ -524,11 +509,12 @@ body {
   background-color: #218838;
 }
 /* Footer */
-.footer {
+.footer { 
     background-color: #e0e0e0;
     text-align: center;
-    padding: 10px;
-    font-size: 0.9rem;
+    height: 1vh;
+    padding: 0;
+    font-size: 0.8rem;
     color: #555;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);    
 }

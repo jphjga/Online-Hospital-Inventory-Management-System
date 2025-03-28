@@ -26,7 +26,7 @@
        
         <!-- Cards Container -->
         <div class="card-container">
-        
+
             <div class="card-grid">
                 <a asp-page="/Dashboard" class="card-link">
                     <div class="card">
@@ -35,38 +35,36 @@
                         </div>
                     </div>
                 </a>
-                <article class="card">
-                    <a href="/Stocktaking" class="card-link">
+                <a asp-page="/Stocktaking" class="card-link">
+                    <div class="card">
                         <div class="card-content">
                             <h3>Stock Taking</h3>
                         </div>
-                    </a>
-                </article>
-
-                <article class="card">
-                    <a href="/Sales" class="card-link">
+                    </div>
+                </a>
+                <a asp-page="/Sales" class="card-link">
+                    <div class="card">
                         <div class="card-content">
                             <h3>Sales</h3>
                         </div>
-                    </a>
-                </article>
-
+                    </div>
+                </a>
                 <div class="card query-center-card" onclick="openQueryCenterModal();">
-                    <div class="card-content">
-                        <h3>Query Center</h3>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Query Center</h3>
+                        </div>
                     </div>
                 </div>
-
-                 <article class="card">
-                    <a href="/Report" class="card-link">
+                <a asp-page="/Report" class="card-link">
+                    <div class="card">
                         <div class="card-content">
                             <h3>Report</h3>
                         </div>
-                    </a>
-                </article>             
+                    </div>
+                </a>
             </div>
         </div>
-
     </div>
 
     <!-- User Profile Modal -->
@@ -99,7 +97,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; @DateTime.Now.Year Njenga | All Rights Reserved</p>
+        <p>&copy; @DateTime.Now.Year Njenga | All Rights Reserved  <a href="/About">About</a></p>
     </footer>
 </body>
 </html>

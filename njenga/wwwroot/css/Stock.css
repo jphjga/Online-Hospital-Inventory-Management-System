@@ -27,6 +27,7 @@
 
 /* Overall Page Styling */
 body {
+    font-size: 0.8rem;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -52,7 +53,7 @@ body {
     }
 #floatingInfo {
     position: fixed;
-    top: 10px;
+   bottom: 5px;
     right: 10px;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -73,13 +74,9 @@ body {
     gap: 20px;
     overflow-y: auto;
     max-height: 90vh;
-    padding: 20px 50px; /* Reduced top padding from 80px to 20px */
-    align-items: flex-start; /* Align both columns to the top */
+    padding: 10px 0;
+    align-items: flex-start;  
 }
-
-
-
-
 .left-column {
   width: 70vw;
   padding: 20px;
@@ -88,6 +85,8 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   animation: fadeIn 0.5s ease-in;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
 @keyframes fadeIn {
@@ -136,7 +135,7 @@ body {
         background-color: #f8f8f8;
     }
 
-/* Content Container for Each Column */
+
 .content-container {
     background: white;
     padding: 20px;
@@ -161,7 +160,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-height: 80vh; /* Limits height and enables scroll if necessary */
+    max-height: 80vh; 
     overflow-y: auto;
 }
 
@@ -191,10 +190,10 @@ body {
         font-size: 14px;
         color: #333;
     }
-/* Ensure the container of the button aligns content to the right */
+
 .for-product {
     text-align: right;
-    margin-top: 20px; /* optional spacing above the button */
+    margin-top: 20px;
 }
 
 /* Style for the submit button */
@@ -215,7 +214,7 @@ body {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* Optional: hover effect */
+   
     .btn.btn-primary:hover {
         background-color: #0056b3;
     }

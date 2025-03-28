@@ -1,6 +1,6 @@
 :root {
   --background: #dedede;
-  --navbar-width: 256px;
+  --navbar-width: 220px;
   --navbar-width-min: 80px;
   --navbar-dark-primary: #18283b;
   --navbar-dark-secondary: #2c3e50;
@@ -76,7 +76,7 @@
 }
 
 #nav-bar {
-  position: absolute;
+  position: fixed;
   left: 2px;
   top: 6vw;  
   height: calc(100% - 10vw);
