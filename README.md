@@ -23,7 +23,6 @@ an institution
 • Medication availability tracking
 • Basic data analysis for performance evaluation
 
-
 --Installation:
  
 To try out the system:
